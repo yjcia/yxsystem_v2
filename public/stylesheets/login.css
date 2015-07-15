@@ -1,0 +1,9 @@
+#loginDiv {
+    position: absolute; /*层漂浮*/
+    top: 30%;
+    left: 70%;
+    width: 300px;
+    height: 300px;
+    margin-top: -150px; /*注意这里必须是DIV高度的一半*/
+    margin-left: -150px; /*这里是DIV宽度的一半*/
+}

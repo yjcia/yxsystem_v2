@@ -1,0 +1,27 @@
+{
+  "appenders": [
+    {
+      "type": "console",
+      "category": "logDebug"
+    },
+    {
+      "type": "console",
+      "category": "logInfo"
+    },
+    {
+      "type": "console",
+      "category": "logWarn"
+    },
+    {
+      "type": "console",
+      "category": "logErr"
+    }
+  ],
+  "replaceConsole": true,
+  "levels": {
+    "logDebug": "DEBUG",
+    "logInfo": "INFO",
+    "logWarn": "WARN",
+    "logErr": "ERROR"
+  }
+}

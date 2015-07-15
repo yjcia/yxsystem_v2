@@ -1,0 +1,79 @@
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">
+                <span class="glyphicon glyphicon-send"></span>
+            </a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li role="presentation" class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                        <span class="sidebar-nav-item-icon fa fa-user"></span>
+                        &nbsp;Register<span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu" style="background-color:#e3e3e3">
+                        <div class="container-fluid" id="registerContainer" style="width: 250px;height: 130px">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <!--<form class="form-inline" id="uploadForm" role="form" action="/user/uploadlogo" method="post" enctype="multipart/form-data">-->
+                                    <!--<div class="form-group" >-->
+                                    <!--<div class="input-group">-->
+                                    <!--<input type="file" id="file" name="logo" class="custom-file-input form-control">-->
+                                    <!--<button type="submit" class="btn btn-default btn-sm form-control">upload</button>-->
+                                    <!--</div>-->
+                                    <!--</div>-->
+                                    <!--</form>-->
+                                    <!--<br/>-->
+                                    <form id="registerForm" role="form" action="/user/register" method="post">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                 <span class="input-group-addon">
+                                                     <span class="glyphicon glyphicon-user"></span>
+                                                </span>
+                                                <input type="text" class="form-control input-sm" id="newUserName"
+                                                       name="username" placeholder="Enter Name">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <span class="glyphicon glyphicon-envelope"></span>
+                                                 </span>
+                                                <input type="email" class="form-control" id="newEmail" name="email"
+                                                       placeholder="Enter email"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                     <span class="glyphicon glyphicon-eye-open"></span>
+                                                </span>
+                                                <input type="password" class="form-control" id="newPassword"
+                                                       name="password" placeholder="Password"/>
+                                            </div>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-warning btn-sm">Create Account</button>
+                                        <button type="reset" class="btn btn-info btn-sm"
+                                                onclick="resetCreateAccountInfo()">Reset Account
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
