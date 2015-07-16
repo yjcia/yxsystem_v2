@@ -201,7 +201,6 @@ function generateAmountLineYear(title, containerId, xCate, xData) {
     });
 }
 function generateAmountTypePie(title, containerId, pieData) {
-
     $(containerId).highcharts({
         chart: {
             type: 'pie',
@@ -225,8 +224,8 @@ function generateAmountTypePie(title, containerId, pieData) {
                     style: {
                         color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
                     }
+                    }
                 }
-            }
         },
         series: [{
             type: 'pie',

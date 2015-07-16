@@ -122,6 +122,8 @@ tableObj.prototype.executeSql = function (sql, params, callback) {
             } else {
                 if (result && result.length > 0) {
                     callback(null, result);
+                } else {
+                    callback(null, null);
                 }
             }
             connection.release();

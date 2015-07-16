@@ -92,11 +92,13 @@ router.post('/amountLineMonth', function (req, res, next) {
                     var returnData = jsonUtil.helper.groupMonthData(result);
                     log.helper.writeDebug('AmountLine month :' + returnData);
                     res.json(returnData);
+                } else {
+                    res.json(null);
                 }
             }
         });
     } else {
-        res.json({});
+        res.json(null);
     }
 });
 
@@ -125,6 +127,8 @@ router.post('/bothAmountLineMonth', function (req, res, next) {
                                 var returnData = jsonUtil.helper.groupMonthData(result);
                                 //log.helper.writeDebug('Cost AmountLine month :' + returnData);
                                 callback(null, {name: 'cost', data: returnData});
+                            } else {
+                                callback(null, {name: 'cost', data: null});
                             }
                         }
                     });
@@ -146,6 +150,8 @@ router.post('/bothAmountLineMonth', function (req, res, next) {
                                 var returnData = jsonUtil.helper.groupMonthData(result);
                                 //log.helper.writeDebug('Rev AmountLine month :' + returnData);
                                 callback(null, {name: 'rev', data: returnData});
+                            } else {
+                                callback(null, {name: 'rev', data: null});
                             }
                         }
                     });
@@ -162,7 +168,7 @@ router.post('/bothAmountLineMonth', function (req, res, next) {
             }
         );
     } else {
-        res.json({});
+        res.json(null);
     }
 });
 
@@ -182,11 +188,13 @@ router.post('/amountLineYear', function (req, res, next) {
                 if (result && result.length > 0) {
                     //log.helper.writeDebug('AmountLine year ' + result);
                     res.json(result);
+                } else {
+                    res.json(null);
                 }
             }
         });
     } else {
-        res.json({});
+        res.json(null);
     }
 });
 
@@ -207,11 +215,13 @@ router.post('/amountTypePie', function (req, res, next) {
                 if (result && result.length > 0) {
                     //log.helper.writeDebug('AmountTypePie year ' + result);
                     res.json(result);
+                } else {
+                    res.json(null);
                 }
             }
         });
     } else {
-        res.json({});
+        res.json(null);
     }
 });
 
@@ -297,7 +307,22 @@ router.post('/register', function (req, res, next) {
                                 if (result) {
                                     req.session.user = result;
                                     res.locals.user = result;
-                                    res.redirect("/user/index");
+                                    var params = {
+                                        id: result.id,
+                                        is_login: 1,
+                                        last_login_ip: req.connection.remoteAddress,
+                                        last_login_time: moment().format(Sys.dateFormat)
+                                    };
+                                    User.update(params, function (err, result) {
+                                        if (err) {
+                                            log.helper.writeErr(err);
+                                        } else {
+                                            req.session.user.is_login = 1;
+                                            res.locals.user.is_login = 1;
+                                            res.redirect("/user/index");
+                                        }
+                                    });
+                                    //res.redirect("/user/index");
                                 } else {
                                     res.render("loginsys", {message: 'Register Error !'});
                                 }
