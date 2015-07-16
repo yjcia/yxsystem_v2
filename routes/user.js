@@ -17,6 +17,22 @@ router.get('/console', function (req, res, next) {
     res.render('console');
 });
 
+router.get('/logout', function (req, res, next) {
+    var user = req.session.user;
+    var params = {id: user.id, is_login: 0, last_login_ip: null, last_login_time: null};
+    var User = DB.getTableObj("User");
+    User.update(params, function (err, result) {
+        if (err) {
+            log.helper.writeErr(err);
+        } else {
+            log.helper.writeDebug(user.username + ' log out at ' + moment().format(Sys.dateFormat));
+            req.session.user = null;
+            res.locals.user = null;
+            res.redirect("/user/login");
+        }
+    });
+});
+
 router.post('/login', function (req, res, next) {
     var User = DB.getTableObj("User");
     var email = req.body.email;
@@ -42,6 +58,8 @@ router.post('/login', function (req, res, next) {
                         if (err) {
                             log.helper.writeErr(err);
                         } else {
+                            req.session.user.is_login = 1;
+                            res.locals.user.is_login = 1;
                             res.redirect("/user/index");
                         }
                     });
@@ -77,6 +95,8 @@ router.post('/amountLineMonth', function (req, res, next) {
                 }
             }
         });
+    } else {
+        res.json({});
     }
 });
 
@@ -123,7 +143,7 @@ router.post('/bothAmountLineMonth', function (req, res, next) {
                                 var shorterArr = new Array();
                                 var jsonObjArr = new Array();
 
-                                var returnData = jsonUtil.helper.groupMonthData(result, jsonArr, resultMonthArr, existMonth, longerArr, shorterArr, jsonObjArr);
+                                var returnData = jsonUtil.helper.groupMonthData(result);
                                 //log.helper.writeDebug('Rev AmountLine month :' + returnData);
                                 callback(null, {name: 'rev', data: returnData});
                             }
@@ -141,6 +161,8 @@ router.post('/bothAmountLineMonth', function (req, res, next) {
                 }
             }
         );
+    } else {
+        res.json({});
     }
 });
 
@@ -163,6 +185,8 @@ router.post('/amountLineYear', function (req, res, next) {
                 }
             }
         });
+    } else {
+        res.json({});
     }
 });
 
@@ -186,6 +210,8 @@ router.post('/amountTypePie', function (req, res, next) {
                 }
             }
         });
+    } else {
+        res.json({});
     }
 });
 

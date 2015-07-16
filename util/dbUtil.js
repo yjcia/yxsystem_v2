@@ -85,8 +85,8 @@ tableObj.prototype.update = function (params, callback) {
         var query = connection.query(sql, params, function (err, result) {
             if (err) {
                 callback(err, result);
-                log.helper.writeDebug('SQL:' + sql);
             } else {
+                log.helper.writeDebug('SQL:' + sql);
                 callback(null, result);
             }
             connection.release();
