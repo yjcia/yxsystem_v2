@@ -1,6 +1,7 @@
 /**
  * Created by YanJun on 2015/7/10.
  */
+var moment = require('moment');
 var month = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
 var result = new Array();
 result[0] = {month: '06', amount: 34};
@@ -49,4 +50,4 @@ for (var i = 0; i < jsonArr.length; i++) {
 function sortNumber(a, b) {
     return a.month - b.month
 }
-console.log(jsonObjArr.concat(result).sort(sortNumber));
+console.log(moment().format('YYYY-MM-DD hh:mm:ss'));

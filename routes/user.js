@@ -1,56 +1,17 @@
 var express = require('express');
 var async = require('async');
 var fs = require('fs');
+var jsonUtil = require('../util/jsonUtil');
 var router = express.Router();
 var conf = require("../config.js");
+var moment = require('moment');
 var formidable = require('formidable');
 var log = require('../util/logUtil');
 var json = require('../util/jsonUtil');
 var logoUploadPath = './public/images/logo/';
-var month = Sys.month;
-//log.use(app);
-function groupMonthData(result) {
-    var jsonArr = new Array();
-    var resultMonthArr = new Array();
-    var existMonth = new Array();
-    var longerArr = new Array();
-    var shorterArr = new Array();
-    var jsonObjArr = new Array();
-    for (var i = 0; i < result.length; i++) {
-        resultMonthArr.push(result[i].month);
-    }
-    if (resultMonthArr.length < month.length) {
-        longerArr = month;
-        shorterArr = resultMonthArr;
-    }
-    for (var i = 0; i < longerArr.length; i++) {
-        if (jsonArr.join(',').indexOf(longerArr[i]) < 0) {
-            jsonArr.push(longerArr[i]);
-        }
-    }
-    for (var i = 0; i < shorterArr.length; i++) {
-        if (jsonArr.join(',').indexOf(shorterArr[i]) > -1) {
-            existMonth.push(shorterArr[i]);
-            jsonArr.splice(jsonArr.indexOf(shorterArr[i]), 1);
-        } else {
-            if (existMonth.join(',').indexOf(shorterArr[i]) < 0) {
-                jsonArr.push(shorterArr[i]);
-            }
-        }
-    }
-    for (var i = 0; i < jsonArr.length; i++) {
-        var jsonObj = new Object();
-        jsonObj.month = jsonArr[i];
-        jsonObj.amount = 0;
-        jsonObjArr.push(jsonObj);
-    }
-    function sortNumber(a, b) {
-        return a.month - b.month
-    }
 
-    var returnData = jsonObjArr.concat(result).sort(sortNumber);
-    return returnData;
-}
+//log.use(app);
+
 /* GET users listing. */
 router.get('/console', function (req, res, next) {
     res.render('console');
@@ -68,7 +29,25 @@ router.post('/login', function (req, res, next) {
             if (result && result.length > 0) {
                 req.session.user = result[0];
                 res.locals.user = result[0];
-                res.redirect("/user/index");
+                if (result[0].is_login == 1) {
+                    res.render("loginsys", {message: 'User has logged in!'});
+                } else {
+                    var params = {
+                        id: result[0].id,
+                        is_login: 1,
+                        last_login_ip: req.connection.remoteAddress,
+                        last_login_time: moment().format(Sys.dateFormat)
+                    };
+                    User.update(params, function (err, result) {
+                        if (err) {
+                            log.helper.writeErr(err);
+                        } else {
+                            res.redirect("/user/index");
+                        }
+                    });
+                }
+
+
             } else {
                 res.render("loginsys", {message: 'Email or Password Wrong!'});
             }
@@ -78,7 +57,7 @@ router.post('/login', function (req, res, next) {
 
 router.post('/amountLineMonth', function (req, res, next) {
     var user = req.session.user;
-    log.helper.writeDebug(user);
+    //log.helper.writeDebug(user);
     if (user && user.id != null) {
         var User = DB.getTableObj('User');
         var sql = "select a.u_id,date_format(a.date,'%m') as month,date_format(a.date,'%Y') as year," +
@@ -87,12 +66,12 @@ router.post('/amountLineMonth', function (req, res, next) {
         var params = [user.id, req.body.type];
         User.executeSql(sql, params, function (err, result) {
             if (err) {
-                log.helper.writeDebug(err);
+                log.helper.writeErr(err);
                 res.json(null);
             } else {
                 if (result && result.length > 0) {
 
-                    var returnData = groupMonthData(result);
+                    var returnData = jsonUtil.helper.groupMonthData(result);
                     log.helper.writeDebug('AmountLine month :' + returnData);
                     res.json(returnData);
                 }
@@ -118,12 +97,12 @@ router.post('/bothAmountLineMonth', function (req, res, next) {
                 forCost: function (callback) {
                     User.executeSql(sqlForCost, params, function (err, result) {
                         if (err) {
-                            log.helper.writeDebug(err);
+                            log.helper.writeErr(err);
                             res.json(null);
                         } else {
                             if (result && result.length > 0) {
 
-                                var returnData = groupMonthData(result);
+                                var returnData = jsonUtil.helper.groupMonthData(result);
                                 //log.helper.writeDebug('Cost AmountLine month :' + returnData);
                                 callback(null, {name: 'cost', data: returnData});
                             }
@@ -133,7 +112,7 @@ router.post('/bothAmountLineMonth', function (req, res, next) {
                 forRev: function (callback) {
                     User.executeSql(sqlForRev, params, function (err, result) {
                         if (err) {
-                            log.helper.writeDebug(err);
+                            log.helper.writeErr(err);
                             res.json(null);
                         } else {
                             if (result && result.length > 0) {
@@ -144,7 +123,7 @@ router.post('/bothAmountLineMonth', function (req, res, next) {
                                 var shorterArr = new Array();
                                 var jsonObjArr = new Array();
 
-                                var returnData = groupMonthData(result, jsonArr, resultMonthArr, existMonth, longerArr, shorterArr, jsonObjArr);
+                                var returnData = jsonUtil.helper.groupMonthData(result, jsonArr, resultMonthArr, existMonth, longerArr, shorterArr, jsonObjArr);
                                 //log.helper.writeDebug('Rev AmountLine month :' + returnData);
                                 callback(null, {name: 'rev', data: returnData});
                             }
@@ -167,8 +146,7 @@ router.post('/bothAmountLineMonth', function (req, res, next) {
 
 router.post('/amountLineYear', function (req, res, next) {
     var user = req.session.user;
-    var month = Sys.month;
-    log.helper.writeDebug(user);
+    //log.helper.writeDebug(user);
     if (user && user.id != null) {
         var User = DB.getTableObj('User');
         var sql = "select a.u_id,date_format(a.date,'%Y') as year,sum(a.amount) as amount from t_charge a " +
@@ -176,7 +154,7 @@ router.post('/amountLineYear', function (req, res, next) {
         var params = [user.id, req.body.type];
         User.executeSql(sql, params, function (err, result) {
             if (err) {
-                log.helper.writeDebug(err);
+                log.helper.writeErr(err);
                 res.json(null);
             } else {
                 if (result && result.length > 0) {
@@ -190,8 +168,7 @@ router.post('/amountLineYear', function (req, res, next) {
 
 router.post('/amountTypePie', function (req, res, next) {
     var user = req.session.user;
-    var month = Sys.month;
-    log.helper.writeDebug(user);
+    //log.helper.writeDebug(user);
     if (user && user.id != null) {
         var User = DB.getTableObj('User');
         var sql = "select b.name,sum(a.amount) as amount from t_charge a " +
@@ -200,7 +177,7 @@ router.post('/amountTypePie', function (req, res, next) {
         var params = [user.id, req.body.type];
         User.executeSql(sql, params, function (err, result) {
             if (err) {
-                log.helper.writeDebug(err);
+                log.helper.writeErr(err);
                 res.json(null);
             } else {
                 if (result && result.length > 0) {
@@ -237,6 +214,7 @@ router.post('/uploadlogo', function (req, res, next) {
         });
     });
 });
+
 router.post('/register', function (req, res, next) {
     var User = DB.getTableObj("User");
     var email = req.body.email;

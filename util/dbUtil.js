@@ -77,6 +77,23 @@ tableObj.prototype.insert = function (params, callback) {
         });
     });
 };
+
+tableObj.prototype.update = function (params, callback) {
+    var tablename = this.tablename
+    this.getConnection(function (connection) {
+        var sql = "update " + tablename + " set ? where id = " + connection.escape(params.id);
+        var query = connection.query(sql, params, function (err, result) {
+            if (err) {
+                callback(err, result);
+                log.helper.writeDebug('SQL:' + sql);
+            } else {
+                callback(null, result);
+            }
+            connection.release();
+        });
+    });
+};
+
 tableObj.prototype.getById = function (id, callback) {
     var sql = "select * from " + this.tablename + " where id = ?";
     this.getConnection(function (connection) {

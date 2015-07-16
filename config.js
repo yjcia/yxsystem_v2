@@ -14,7 +14,8 @@ global.Sys = new function () {
         this.adminUrls = [
             "/admin/setting"
         ],
-        this.month = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
+        this.month = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'],
+        this.dateFormat = 'YYYY-MM-DD hh:mm:ss'
 
 
 }

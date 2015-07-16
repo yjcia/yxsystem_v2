@@ -107,7 +107,7 @@ function getBothAmountLineMonth(title, containerId) {
 function generateAmountLineMonth(title, containerId, xData) {
     $(containerId).highcharts({
         chart: {
-            type: 'area'
+            type: 'areaspline'
         },
         title: {
             text: title
@@ -201,6 +201,7 @@ function generateAmountLineYear(title, containerId, xCate, xData) {
     });
 }
 function generateAmountTypePie(title, containerId, pieData) {
+
     $(containerId).highcharts({
         chart: {
             type: 'pie',
@@ -236,7 +237,7 @@ function generateAmountTypePie(title, containerId, pieData) {
 function generateBothAmountLineMonth(title, containerId, xData) {
     $(containerId).highcharts({
         chart: {
-            type: 'area'
+            type: 'areaspline'
         },
         title: {
             text: title
