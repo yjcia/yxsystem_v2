@@ -40,7 +40,7 @@ if (!String.prototype.formatNum) {
 
     var defaults = {
         // Width of the calendar
-        width: '80%',
+        width: '100%',
         // Initial view (can be 'month', 'week', 'day')
         view: 'month',
         // Initial date. No matter month, week or day this will be a starting point. Can be 'now' or a date in format 'yyyy-mm-dd'
@@ -100,7 +100,7 @@ if (!String.prototype.formatNum) {
                 enable: 1
             },
             day: {
-                enable: 1
+                enable: 0
             }
         },
         merge_holidays: false,
@@ -422,7 +422,8 @@ if (!String.prototype.formatNum) {
                 //this._calculate_hour_minutes(data);
                 break;
             case 'day':
-                //this._calculate_hour_minutes(data);
+                this._calculate_hour_minutes(data);
+                //alert('');
                 break;
         }
 
@@ -1064,8 +1065,8 @@ if (!String.prototype.formatNum) {
                 var day = (child.hasClass('cal-month-first-row') ? 1 : $('[data-cal-date]', child).text());
                 p.setDate(parseInt(day));
                 day = (day < 10 ? '0' + day : day);
-                week.html(self.locale.week.format(p.getWeek()));
-                week.attr('data-cal-week', start + day).show().appendTo(child);
+                //week.html(self.locale.week.format(p.getWeek()));
+                //week.attr('data-cal-week', start + day).show().appendTo(child);
             })
             .on('mouseleave', function () {
                 week.hide();
