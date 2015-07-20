@@ -4,6 +4,7 @@ var fs = require('fs');
 var jsonUtil = require('../util/jsonUtil');
 var router = express.Router();
 var conf = require("../config.js");
+var sql = require("../sql.js");
 var moment = require('moment');
 var formidable = require('formidable');
 var log = require('../util/logUtil');
@@ -78,9 +79,7 @@ router.post('/amountLineMonth', function (req, res, next) {
     //log.helper.writeDebug(user);
     if (user && user.id != null) {
         var User = DB.getTableObj('User');
-        var sql = "select a.u_id,date_format(a.date,'%m') as month,date_format(a.date,'%Y') as year," +
-            "sum(a.amount) as amount from t_charge a where a.u_id = ? and a.type = ? and date_format(a.date,'%Y') = date_format(sysdate(),'%Y') " +
-            "group by date_format(a.date,'%m')";
+        var sql = Sql.amountLineMonth;
         var params = [user.id, req.body.type];
         User.executeSql(sql, params, function (err, result) {
             if (err) {
@@ -88,7 +87,6 @@ router.post('/amountLineMonth', function (req, res, next) {
                 res.json(null);
             } else {
                 if (result && result.length > 0) {
-
                     var returnData = jsonUtil.helper.groupMonthData(result);
                     log.helper.writeDebug('AmountLine month :' + returnData);
                     res.json(returnData);
@@ -106,14 +104,8 @@ router.post('/bothAmountLineMonth', function (req, res, next) {
     var user = req.session.user;
     if (user && user.id != null) {
         var User = DB.getTableObj('User');
-        var sqlForCost = "select a.u_id,date_format(a.date,'%m') as month,date_format(a.date,'%Y') as year," +
-            "sum(a.amount) as amount from t_charge a where a.u_id = ? and a.type = 0 " +
-            "and date_format(a.date,'%Y') = date_format(sysdate(),'%Y') " +
-            "group by date_format(a.date,'%m')";
-        var sqlForRev = "select a.u_id,date_format(a.date,'%m') as month,date_format(a.date,'%Y') as year," +
-            "sum(a.amount) as amount from t_charge a where a.u_id = ? and a.type = 1 " +
-            "and date_format(a.date,'%Y') = date_format(sysdate(),'%Y') " +
-            "group by date_format(a.date,'%m')";
+        var sqlForCost = Sql.bothAmountLineMonthForCost;
+        var sqlForRev = Sql.bothAmountLineMonthForRev;
         var params = [user.id];
         async.series({
                 forCost: function (callback) {
@@ -140,13 +132,6 @@ router.post('/bothAmountLineMonth', function (req, res, next) {
                             res.json(null);
                         } else {
                             if (result && result.length > 0) {
-                                var jsonArr = new Array();
-                                var resultMonthArr = new Array();
-                                var existMonth = new Array();
-                                var longerArr = new Array();
-                                var shorterArr = new Array();
-                                var jsonObjArr = new Array();
-
                                 var returnData = jsonUtil.helper.groupMonthData(result);
                                 //log.helper.writeDebug('Rev AmountLine month :' + returnData);
                                 callback(null, {name: 'rev', data: returnData});
@@ -177,8 +162,7 @@ router.post('/amountLineYear', function (req, res, next) {
     //log.helper.writeDebug(user);
     if (user && user.id != null) {
         var User = DB.getTableObj('User');
-        var sql = "select a.u_id,date_format(a.date,'%Y') as year,sum(a.amount) as amount from t_charge a " +
-            "where a.u_id = ? and a.type = ? group by date_format(a.date,'%Y')";
+        var sql = Sql.amountLineYear;
         var params = [user.id, req.body.type];
         User.executeSql(sql, params, function (err, result) {
             if (err) {
@@ -203,9 +187,7 @@ router.post('/amountTypePie', function (req, res, next) {
     //log.helper.writeDebug(user);
     if (user && user.id != null) {
         var User = DB.getTableObj('User');
-        var sql = "select b.name,sum(a.amount) as amount from t_charge a " +
-            "left join t_charge_cate b on a.charge_cate_id = b.id where a.u_id = ? and a.type = ? " +
-            "and date_format(a.date,'%Y') = date_format(sysdate(),'%Y') group by b.id";
+        var sql = Sql.amountTypePie;
         var params = [user.id, req.body.type];
         User.executeSql(sql, params, function (err, result) {
             if (err) {
@@ -351,5 +333,10 @@ router.get('/login', function (req, res, next) {
 router.get("/index", function (req, res) {
     //log.helper.writeDebug('index user session :' + req.session.user);
     res.render("index");
+});
+
+router.get("/test", function (req, res) {
+    //log.helper.writeDebug('index user session :' + req.session.user);
+    res.render("test");
 });
 module.exports = router;

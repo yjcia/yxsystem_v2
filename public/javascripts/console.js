@@ -11,6 +11,20 @@ var chartsProp = {
     revCostAmountLineMonth: {title: 'Rev & Cost Amount Line (Month)', container: '#containerBoth'}
 };
 
+var calendarProp = {
+    container: '#containerCalendar',
+    tmpl_path: '/javascripts/bootstrap-calendar/tmpls/'
+};
+
+function getCalendar() {
+    var calendar = $(calendarProp.container).calendar(
+        {
+            tmpl_path: calendarProp.tmpl_path,
+            events_source: function () {
+                return [];
+            }
+        });
+}
 
 function getAmountLineMonth(title, containerId, type) {
     $.ajax({
@@ -50,7 +64,6 @@ function getAmountLineYear(title, containerId, type) {
                 }
                 generateAmountLineYear(title, containerId, xCate, xData);
             }
-
         }
     });
 }
@@ -62,14 +75,12 @@ function getAmountTypePie(title, containerId, type) {
             type: type
         },
         success: function (result) {
-            //console.log(result);
             if (result && result.length > 0) {
                 var typeJsonData = new Array();
                 for (var i = 0; i < result.length; i++) {
                     var typeArr = new Array();
                     typeArr.push(result[i].name);
                     typeArr.push(result[i].amount);
-                    //console.log(typeArr);
                     typeJsonData.push(typeArr);
                 }
                 generateAmountTypePie(title, containerId, typeJsonData);
@@ -224,8 +235,8 @@ function generateAmountTypePie(title, containerId, pieData) {
                     style: {
                         color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
                     }
-                    }
                 }
+            }
         },
         series: [{
             type: 'pie',
@@ -282,10 +293,12 @@ $(function () {
     getBothAmountLineMonth(chartsProp.revCostAmountLineMonth.title, chartsProp.revCostAmountLineMonth.container);
 
     getAmountLineMonth(chartsProp.costAmountLineMonth.title, chartsProp.costAmountLineMonth.container, 0);
-    getAmountLineYear(chartsProp.costAmountLineYear.title, chartsProp.costAmountLineYear.container, 0);
+    //getAmountLineYear(chartsProp.costAmountLineYear.title, chartsProp.costAmountLineYear.container, 0);
     getAmountTypePie(chartsProp.costAmountType.title, chartsProp.costAmountType.container, 0);
 
     getAmountLineMonth(chartsProp.revAmountLineMonth.title, chartsProp.revAmountLineMonth.container, 1);
-    getAmountLineYear(chartsProp.revAmountLineYear.title, chartsProp.revAmountLineYear.container, 1);
+    //getAmountLineYear(chartsProp.revAmountLineYear.title, chartsProp.revAmountLineYear.container, 1);
     getAmountTypePie(chartsProp.revAmountType.title, chartsProp.revAmountType.container, 1);
+
+    getCalendar();
 });
