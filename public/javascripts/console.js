@@ -32,7 +32,27 @@ function getCalendar() {
     var calendar = $(calendarProp.container).calendar(
         {
             tmpl_path: calendarProp.tmpl_path,
-            events_source: '/javascripts/bootstrap-calendar/events.json.php',
+            events_source: function () {
+                var returnData;
+                $.ajax({
+                    url: '/user/getCalendar',
+                    type: 'post',
+                    async: false,
+                    success: function (result) {
+                        console.log("return");
+                        returnData = [{
+                            "id": "294",
+                            "title": "This is warning class event with very long title to check how " +
+                            "it fits to evet in day view 2",
+                            "url": "http://www.example.com/",
+                            "class": "event-warning",
+                            "start": "1437386980363",
+                            "end": "1437486980363"
+                        }];
+                    }
+                })
+                return returnData;
+            },
             onAfterEventsLoad: function (events) {
                 if (!events) {
                     return;

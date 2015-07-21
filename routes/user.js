@@ -335,6 +335,10 @@ router.get("/index", function (req, res) {
     res.render("index");
 });
 
+router.post("/getCalendar", function (req, res, next) {
+    res.json({});
+});
+
 router.get("/test", function (req, res) {
     //log.helper.writeDebug('index user session :' + req.session.user);
     res.render("test");
