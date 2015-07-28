@@ -130,6 +130,21 @@ tableObj.prototype.executeSql = function (sql, params, callback) {
         });
     });
 };
+
+tableObj.prototype.countByUid = function (uid, callback) {
+    var sql = "select count(*) as count from " + this.tablename + " where u_id = ? ";
+    this.getConnection(function (connection) {
+        var query = connection.query(sql, uid, function (err, result) {
+            if (err) {
+                callback(err, result);
+            } else {
+                callback(null, result[0].count);
+            }
+            connection.release();
+        });
+    });
+};
+
 dbUtil.prototype.getTableObj = function (modelName) {
     if (modelName) {
         var _len = this.tables.length;

@@ -342,6 +342,56 @@ function generateBothAmountLineMonth(title, containerId, xData) {
         series: xData
     });
 }
+
+function getChargesTable() {
+
+    $('#chargeTable').bootstrapTable({
+        method: 'get',
+        url: 'getChargesByUid',
+        cache: false,
+        //height: 400,
+        striped: true,
+        pagination: true,
+        pageSize: 5,
+        pageList: [5, 10],
+        search: true,
+        showColumns: true,
+        showRefresh: true,
+        minimumCountColumns: 2,
+        //clickToSelect: true,
+        columns: [{
+            field: 'id',
+            title: 'ID',
+            align: 'center',
+            valign: 'middle',
+            sortable: true
+        }, {
+            field: 'name',
+            title: 'Name',
+            align: 'center',
+            valign: 'middle',
+            sortable: true
+        }, {
+            field: 'amount',
+            title: 'Amount',
+            align: 'center',
+            valign: 'middle',
+            sortable: true
+        }, {
+            field: 'date',
+            title: 'Date',
+            align: 'center',
+            valign: 'middle',
+            sortable: true
+        }, {
+            field: 'type',
+            title: 'Type',
+            align: 'center',
+            valign: 'middle'
+        }]
+    });
+}
+
 $(function () {
     getBothAmountLineMonth(chartsProp.revCostAmountLineMonth.title, chartsProp.revCostAmountLineMonth.container);
 
@@ -354,4 +404,6 @@ $(function () {
     getAmountTypePie(chartsProp.revAmountType.title, chartsProp.revAmountType.container, 1);
 
     getCalendar();
+
+    getChargesTable();
 });

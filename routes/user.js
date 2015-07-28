@@ -339,6 +339,73 @@ router.post("/getCalendar", function (req, res, next) {
     res.json({});
 });
 
+router.get("/getChargesByUid", function (req, res, next) {
+    var user = req.session.user;
+    var User = DB.getTableObj('User');
+    var params = [user.id];
+    User.executeSql(Sql.getChargesByUid, params, function (err, result) {
+        if (err) {
+            log.helper.writeErr(err);
+            res.json(null);
+        } else {
+            if (result && result.length > 0) {
+                log.helper.writeDebug(result);
+                //callback(null, result);
+                res.json(result);
+            } else {
+                //callback(null,null);
+                res.json({});
+            }
+        }
+    });
+    //res.json([{
+    //    total: 1,
+    //    rows: [{id: 5, name: 'Food', amount: 55, type: 'rev'}]
+    //    id: 5, name: 'Food', amount: 55, type: 'rev'
+    //}]);
+    //var user = req.session.user;
+    ////log.helper.writeDebug(user);
+    //if (user && user.id != null) {
+    //    async.series({
+    //        total:function(callback){
+    //            var Charge = DB.getTableObj('Charge');
+    //            Charge.countByUid(user.id,function(err,result){
+    //                    if (err) {
+    //                        log.helper.writeErr(err);
+    //                        res.json(null);
+    //                    } else {
+    //                        callback(null,result);
+    //                    }
+    //            });
+    //        },
+    //        rows:function(callback){
+    //            var User = DB.getTableObj('User');
+    //            var params = [user.id];
+    //            User.executeSql(Sql.getChargesByUid,params,function(err,result){
+    //                if (err) {
+    //                    log.helper.writeErr(err);
+    //                    res.json(null);
+    //                } else {
+    //                    if (result && result.length > 0) {
+    //                        callback(null, result);
+    //                    }else{
+    //                        callback(null,null);
+    //                    }
+    //                }
+    //            });
+    //        }
+    //    },function (err, results) {
+    //        // results is now equal to: {one: 1, two: 2}
+    //        if (err) {
+    //            log.helper.writeErr(err);
+    //        } else {
+    //            log.helper.writeDebug(results);
+    //            res.json(results);
+    //        }
+    //    });
+    //}
+});
+
 router.get("/test", function (req, res) {
     //log.helper.writeDebug('index user session :' + req.session.user);
     res.render("test");
