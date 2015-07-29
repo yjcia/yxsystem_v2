@@ -78,7 +78,6 @@ function getCalendar() {
             }
         });
 }
-
 function getAmountLineMonth(title, containerId, type) {
     $.ajax({
         url: '/user/amountLineMonth',
@@ -167,7 +166,6 @@ function getBothAmountLineMonth(title, containerId) {
         }
     });
 }
-
 function generateAmountLineMonth(title, containerId, xData) {
     $(containerId).highcharts({
         chart: {
@@ -342,9 +340,40 @@ function generateBothAmountLineMonth(title, containerId, xData) {
         series: xData
     });
 }
+function toUtf8(str) {
+    var out, i, len, c;
+    out = "";
+    len = str.length;
+    for (i = 0; i < len; i++) {
+        c = str.charCodeAt(i);
+        if ((c >= 0x0001) && (c <= 0x007F)) {
+            out += str.charAt(i);
+        } else if (c > 0x07FF) {
+            out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+            out += String.fromCharCode(0x80 | ((c >> 6) & 0x3F));
+            out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+        } else {
+            out += String.fromCharCode(0xC0 | ((c >> 6) & 0x1F));
+            out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+        }
+    }
+    return out;
+}
+
+function getQrCode() {
+    $("#qrcode").empty();
+    var str = toUtf8($("#userNameLink").text());
+    console.log("qrcode-->" + str);
+    $("#qrcode").qrcode({
+        render: "table",
+        width: 100,
+        height: 100,
+        text: str
+    });
+
+}
 
 function getChargesTable() {
-
     $('#chargeTable').bootstrapTable({
         method: 'get',
         url: 'getChargesByUid',
@@ -406,4 +435,6 @@ $(function () {
     getCalendar();
 
     getChargesTable();
+
+    getQrCode();
 });
