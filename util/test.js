@@ -50,4 +50,4 @@ for (var i = 0; i < jsonArr.length; i++) {
 function sortNumber(a, b) {
     return a.month - b.month
 }
-console.log(moment().format('YYYY-MM-DD hh:mm:ss'));
+console.log(new Date("2015-08-15").getTime());

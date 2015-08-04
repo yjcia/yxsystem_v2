@@ -335,8 +335,44 @@ router.get("/index", function (req, res) {
     res.render("index");
 });
 
-router.post("/getCalendar", function (req, res, next) {
-    res.json({});
+router.post("/getChargeCalendar", function (req, res, next) {
+    var user = req.session.user;
+    if (user && user.id != null) {
+        var User = DB.getTableObj('User');
+        var params = [user.id];
+        User.executeSql(Sql.getChargeCalendar, params, function (err, result) {
+            if (err) {
+                log.helper.writeErr(err);
+                res.json({});
+            } else {
+                if (result && result.length > 0) {
+                    log.helper.writeDebug(result);
+                    //callback(null, result);
+                    var calendarArr = new Array();
+                    var returnObj = {};
+                    for (var i = 0; i < result.length; i++) {
+                        var calenderObj = {
+                            id: result[i].id,
+                            title: result[i].name + " " + result[i].title,
+                            class: "event-warning",
+                            start: new Date(result[i].date).getTime(),
+                            end: new Date(result[i].date).getTime()
+                        };
+                        calendarArr.push(calenderObj);
+                        returnObj.success = 1;
+                        returnObj.result = calendarArr;
+
+                    }
+                    res.json(returnObj);
+                } else {
+                    //callback(null,null);
+                    res.json({});
+                }
+            }
+        });
+    } else {
+        res.json({});
+    }
 });
 
 router.get("/getChargesByUid", function (req, res, next) {
