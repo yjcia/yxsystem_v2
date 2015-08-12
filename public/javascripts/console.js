@@ -384,7 +384,7 @@ function getChargesTable() {
             title: 'ID',
             align: 'center',
             valign: 'middle',
-            sortable: true
+            visible: false
         }, {
             field: 'name',
             title: 'Name',

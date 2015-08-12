@@ -24,7 +24,7 @@ global.Sql = new function () {
         "and date_format(a.date,'%Y') = date_format(sysdate(),'%Y') group by b.id";
 
     this.getChargesByUid = "select a.id,b.name,a.amount,a.date,case a.type when 0 then 'cost' else 'rev' " +
-        "end as type from t_charge a left join t_charge_cate b on a.charge_cate_id = b.id where a.u_id = ?" +
+        "end as type ,a.remark from t_charge a left join t_charge_cate b on a.charge_cate_id = b.id where a.u_id = ?" +
         " order by a.date desc";
 
     this.getChargeCalendar = "select a.id,a.remark as title,b.name,a.date from t_charge a left join " +

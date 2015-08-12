@@ -1,6 +1,7 @@
 var express = require('express');
 var async = require('async');
 var fs = require('fs');
+var crypto = require('crypto');
 var jsonUtil = require('../util/jsonUtil');
 var router = express.Router();
 var conf = require("../config.js");
@@ -16,6 +17,10 @@ var logoUploadPath = './public/images/logo/';
 /* GET users listing. */
 router.get('/console', function (req, res, next) {
     res.render('console');
+});
+
+router.get('/setting', function (req, res, next) {
+    res.render('setting');
 });
 
 router.get('/logout', function (req, res, next) {
@@ -38,7 +43,10 @@ router.post('/login', function (req, res, next) {
     var User = DB.getTableObj("User");
     var email = req.body.email;
     var password = req.body.password;
-    var params = {email: email, password: password};
+    var shasum = crypto.createHash('sha1');
+    shasum.update(password);
+    var safePwd = shasum.digest('hex');
+    var params = {email: email, password: safePwd};
     User.queryByCondition(params, function (err, result) {
         if (err) {
             log.helper.writeErr(err);
@@ -238,6 +246,9 @@ router.post('/register', function (req, res, next) {
     var email = req.body.email;
     var username = req.body.username;
     var password = req.body.password;
+    var shasum = crypto.createHash('sha1');
+    shasum.update(password);
+    var safePwd = shasum.digest('hex');
     async.series({
             username: function (callback) {
                 User.queryByCondition({username: username}, function (err, result) {
@@ -275,7 +286,7 @@ router.post('/register', function (req, res, next) {
             log.helper.writeDebug(results);
             if (usernamePass && emailPass) {
                 //insert new user
-                var newUser = {username: username, email: email, password: password};
+                var newUser = {username: username, email: email, password: safePwd};
                 User.insert(newUser, function (err, newId) {
                     if (err) {
                         log.helper.writeErr(err);

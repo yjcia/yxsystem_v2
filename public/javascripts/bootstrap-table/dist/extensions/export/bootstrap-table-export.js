@@ -7,15 +7,15 @@
     'use strict';
 
     var TYPE_NAME = {
-        json: 'JSON',
-        xml: 'XML',
-        png: 'PNG',
-        csv: 'CSV',
+        //json: 'JSON',
+        //xml: 'XML',
+        //png: 'PNG',
+        //csv: 'CSV',
         txt: 'TXT',
-        sql: 'SQL',
-        doc: 'MS-Word',
-        excel: 'Ms-Excel',
-        powerpoint: 'Ms-Powerpoint',
+        //sql: 'SQL',
+        //doc: 'MS-Word',
+        excel: 'Excel',
+        //powerpoint: 'Ms-Powerpoint',
         pdf: 'PDF'
     };
 
