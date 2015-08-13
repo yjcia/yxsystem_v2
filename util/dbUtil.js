@@ -173,16 +173,16 @@ dbUtil.prototype.getTableObj = function (modelName) {
 var createPool = function () {
     if (pool == null) {
         pool = mysql.createPool({
-            //host: '127.0.0.1',
-            //user: 'root',
-            //password: 'root',
-            //port: '3306',
-            //database: 'yxsystem'
-            host: '192.168.1.13',
-            user: '8263731b-88ed',
-            password: '6e113817-4da8',
+            host: '127.0.0.1',
+            user: 'root',
+            password: 'root',
             port: '3306',
-            database: 'd098f654b9d9c46c89491e5d1e94588f3'
+            database: 'yxsystem'
+            //host: '192.168.1.13',
+            //user: '8263731b-88ed',
+            //password: '6e113817-4da8',
+            //port: '3306',
+            //database: 'd098f654b9d9c46c89491e5d1e94588f3'
         });
     }
     return pool;
