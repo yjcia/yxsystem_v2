@@ -95,6 +95,7 @@ $(document).ready(function () {
         }
     });
 
+
 });
 function generateNoty(text) {
     var n = noty({

@@ -109,6 +109,20 @@ tableObj.prototype.getById = function (id, callback) {
     });
 };
 
+tableObj.prototype.removeById = function (id, callback) {
+    var sql = "delete from " + this.tablename + " where id = ?";
+    this.getConnection(function (connection) {
+        var query = connection.query(sql, id, function (err, result) {
+            if (err || result.length != 1) {
+                callback(err, result);
+            } else {
+                callback(null, result[0]);
+            }
+            connection.release();
+        });
+    });
+};
+
 tableObj.prototype.executeSql = function (sql, params, callback) {
     if (params) {
         for (var i = 0; i < params.length; i++) {

@@ -39,11 +39,20 @@ function getCalendar() {
                     type: 'post',
                     async: false,
                     success: function (result) {
-                        returnData = result.result;
+                        if (result != null) {
+                            returnData = result.result;
+                        } else {
+                            returnData = {};
+                        }
+
 
                     }
                 });
                 return returnData;
+            },
+            onBeforeEventsLoad: function (next) {
+                // Inside this function 'this' is the calendar instance
+                next();
             },
             onAfterEventsLoad: function (events) {
                 if (!events) {

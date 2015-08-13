@@ -346,7 +346,7 @@ router.get("/index", function (req, res) {
     res.render("index");
 });
 
-router.post("/getChargeCalendar", function (req, res, next) {
+router.post('/getChargeCalendar', function (req, res, next) {
     var user = req.session.user;
     if (user && user.id != null) {
         var User = DB.getTableObj('User');
@@ -364,7 +364,8 @@ router.post("/getChargeCalendar", function (req, res, next) {
                     for (var i = 0; i < result.length; i++) {
                         var calenderObj = {
                             id: result[i].id,
-                            title: result[i].name + " " + result[i].title,
+                            title: result[i].name != '' ? result[i].name : " " +
+                            result[i].title != '' ? result[i].title : "",
                             class: "event-warning",
                             start: new Date(result[i].date).getTime(),
                             end: new Date(result[i].date).getTime()
@@ -376,8 +377,20 @@ router.post("/getChargeCalendar", function (req, res, next) {
                     }
                     res.json(returnObj);
                 } else {
+                    var calendarArr = new Array();
+                    var returnObj = {};
                     //callback(null,null);
-                    res.json({});
+                    var calenderObj = {
+                        id: '',
+                        title: '',
+                        class: '',
+                        start: '',
+                        end: ''
+                    };
+                    calendarArr.push(calenderObj);
+                    returnObj.success = 1;
+                    returnObj.result = calendarArr;
+                    res.json(returnObj);
                 }
             }
         });
@@ -386,7 +399,7 @@ router.post("/getChargeCalendar", function (req, res, next) {
     }
 });
 
-router.get("/getChargesByUid", function (req, res, next) {
+router.get('/getChargesByUid', function (req, res, next) {
     var user = req.session.user;
     if (user && user.id != null) {
         var User = DB.getTableObj('User');
@@ -402,6 +415,27 @@ router.get("/getChargesByUid", function (req, res, next) {
                     res.json(result);
                 } else {
                     //callback(null,null);
+                    res.json({});
+                }
+            }
+        });
+    }
+});
+
+router.post('/removeCharge', function (req, res, next) {
+    var user = req.session.user;
+    var id = req.body.id;
+    if (user && user.id != null && (id != null || id != '')) {
+        var Charge = DB.getTableObj('Charge');
+        Charge.removeById(id, function (err, result) {
+            if (err) {
+                log.helper.writeErr(err);
+                res.json(null);
+            } else {
+                if (result && result.affectedRows > 0) {
+                    log.helper.writeDebug(result);
+                    res.json(result);
+                } else {
                     res.json({});
                 }
             }
