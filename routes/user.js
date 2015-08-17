@@ -25,18 +25,24 @@ router.get('/setting', function (req, res, next) {
 
 router.get('/logout', function (req, res, next) {
     var user = req.session.user;
-    var params = {id: user.id, is_login: 0, last_login_ip: null, last_login_time: null};
-    var User = DB.getTableObj("User");
-    User.update(params, function (err, result) {
-        if (err) {
-            log.helper.writeErr(err);
-        } else {
-            log.helper.writeDebug(user.username + ' log out at ' + moment().format(Sys.dateFormat));
-            req.session.user = null;
-            res.locals.user = null;
-            res.redirect("/user/login");
-        }
-    });
+    if (user && user.id != null) {
+        var params = {id: user.id, is_login: 0, last_login_ip: null, last_login_time: null};
+        var User = DB.getTableObj("User");
+        User.update(params, function (err, result) {
+            if (err) {
+                log.helper.writeErr(err);
+            } else {
+                log.helper.writeDebug(user.username + ' log out at ' + moment().format(Sys.dateFormat));
+                req.session.user = null;
+                res.locals.user = null;
+                res.redirect("/user/login");
+            }
+        });
+    } else {
+        req.session.user = null;
+        res.locals.user = null;
+        res.redirect("/user/login");
+    }
 });
 
 router.post('/login', function (req, res, next) {
@@ -428,6 +434,35 @@ router.post('/removeCharge', function (req, res, next) {
     if (user && user.id != null && (id != null || id != '')) {
         var Charge = DB.getTableObj('Charge');
         Charge.removeById(id, function (err, result) {
+            if (err) {
+                log.helper.writeErr(err);
+                res.json(null);
+            } else {
+                if (result && result.affectedRows > 0) {
+                    log.helper.writeDebug(result);
+                    res.json(result);
+                } else {
+                    res.json({});
+                }
+            }
+        });
+    }
+});
+
+router.post('/updateCharge', function (req, res, next) {
+    var user = req.session.user;
+    var id = req.body.id;
+    var params = {
+        id: req.body.id,
+        amount: req.body.amount,
+        charge_cate_id: req.body.cate,
+        date: req.body.date,
+        type: req.body.type,
+        remark: req.body.remark
+    };
+    if (user && user.id != null && (id != null || id != '')) {
+        var Charge = DB.getTableObj('Charge');
+        Charge.update(params, function (err, result) {
             if (err) {
                 log.helper.writeErr(err);
                 res.json(null);

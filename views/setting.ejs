@@ -24,6 +24,7 @@
             </div>
             <div class="modal-body">
                 <form id="chargeEditForm">
+                    <input type="hidden" id="editId">
                     <div class="form-group">
                         <label for="category">Category</label>
 
@@ -31,13 +32,13 @@
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-list"></span>
                             </span>
-                            <select class="form-control">
-                                <option>Food</option>
-                                <option>Traffic</option>
-                                <option>Telecome</option>
-                                <option>Electric</option>
-                                <option>Gas</option>
-                                <option>Others</option>
+                            <select id="cateSelect" class="form-control">
+                                <option value="1">Food</option>
+                                <option value="2">Traffic</option>
+                                <option value="3">Telecome</option>
+                                <option value="4">Electric</option>
+                                <option value="5">Gas</option>
+                                <option value="6">Others</option>
                             </select>
                         </div>
                     </div>
@@ -48,7 +49,7 @@
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-usd"></span>
                             </span>
-                            <input type="text" class="form-control" id="amount" name="amount" placeholder="Amount">
+                            <input type="text" class="form-control" id="editAmount" name="amount" placeholder="Amount">
 
                         </div>
                     </div>
@@ -59,7 +60,7 @@
                              <span class="input-group-addon">
                                 <span class="glyphicon-calendar glyphicon"></span>
                             </span>
-                            <input type="text" class="form-control" id="date" name="date"
+                            <input type="text" class="form-control" id="editDate" name="date"
                                    data-date-format="yyyy-mm-dd" placeholder="Date">
 
                         </div>
@@ -71,9 +72,9 @@
                             <span class="input-group-addon">
                                 <span class="glyphicon-list glyphicon"></span>
                             </span>
-                            <select class="form-control">
-                                <option>rev</option>
-                                <option>cost</option>
+                            <select class="form-control" id="typeSelect">
+                                <option value="0">rev</option>
+                                <option value="1">cost</option>
                             </select>
                         </div>
                     </div>
@@ -84,14 +85,14 @@
                             <span class="input-group-addon">
                                 <span class="glyphicon-comment glyphicon"></span>
                             </span>
-                            <input type="text" class="form-control" id="remark" name="remark" placeholder="Remark">
+                            <input type="text" class="form-control" id="editRemark" name="remark" placeholder="Remark">
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary" onclick="saveChargeUpdate()">Save changes</button>
             </div>
         </div>
     </div>
