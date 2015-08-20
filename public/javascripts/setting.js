@@ -85,9 +85,28 @@ function initEditDateTimepicker() {
                 .validateField('date');
         });
 }
+function initAddDateTimepicker() {
+    $('#addChargeDateDiv')
+        .datetimepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+            minView: 2,
+            todayHighlight: true
+
+
+        })
+        .on('dp.change dp.show', function (e) {
+            $('#chargeAddForm')
+                .data('bootstrapValidator')
+                .updateStatus('date', 'NOT_VALIDATED', null)
+                .validateField('date');
+        });
+}
+
 $(function () {
     initChargeTable();
     initEditDateTimepicker();
+    initAddDateTimepicker();
 });
 function operateFormatter(value, row, index) {
     return [
@@ -121,6 +140,28 @@ function saveChargeUpdate() {
         }
     });
 }
+
+function saveNewCharge() {
+    $.ajax({
+        url: '/user/addCharge',
+        data: {
+            amount: $('#addAmount').val(),
+            cate: $('#addCateSelect option:selected').val(),
+            date: $('#addDate').val(),
+            type: $('#typeSelect option:selected').val(),
+            remark: $('#addRemark').val()
+        },
+        type: 'post',
+        success: function (result) {
+            console.log(result);
+            $('#addChargeModal').modal('hide');
+            if (result.affectedRows > 0) {
+                $('#chargeSettingTable').bootstrapTable('refresh', {silent: true});
+            }
+        }
+    });
+}
+
 window.operateEvents = {
     'click .edit': function (e, value, row, index) {
         //alert('You click like action, row: ' + JSON.stringify(row));

@@ -478,6 +478,35 @@ router.post('/updateCharge', function (req, res, next) {
     }
 });
 
+router.post('/addCharge', function (req, res, next) {
+    var user = req.session.user;
+    //var id = req.body.id;
+    var params = {
+        u_id: user.id,
+        amount: req.body.amount,
+        charge_cate_id: req.body.cate,
+        date: req.body.date,
+        type: req.body.type,
+        remark: req.body.remark
+    };
+    if (user && user.id != null) {
+        var Charge = DB.getTableObj('Charge');
+        Charge.insert(params, function (err, newId) {
+            if (err) {
+                log.helper.writeErr(err);
+                res.json(null);
+            } else {
+                if (newId > 0) {
+                    log.helper.writeDebug(newId);
+                    res.json(newId);
+                } else {
+                    res.json({});
+                }
+            }
+        });
+    }
+});
+
 router.get("/test", function (req, res) {
     //log.helper.writeDebug('index user session :' + req.session.user);
     res.render("test");
