@@ -2,6 +2,7 @@
  * Created by YanJun on 2015/7/6.
  */
 $(document).ready(function () {
+
     $('#chargeAddForm').bootstrapValidator({
         message: 'This value is not valid',
         feedbackIcons: {

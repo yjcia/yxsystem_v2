@@ -493,6 +493,7 @@ router.post('/addCharge', function (req, res, next) {
         var Charge = DB.getTableObj('Charge');
         Charge.insert(params, function (err, newId) {
             if (err) {
+
                 log.helper.writeErr(err);
                 res.json(null);
             } else {

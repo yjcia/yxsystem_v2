@@ -143,6 +143,7 @@ function saveChargeUpdate() {
 
 function saveNewCharge() {
     $.ajax({
+
         url: '/user/addCharge',
         data: {
             amount: $('#addAmount').val(),
