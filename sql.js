@@ -23,7 +23,7 @@ global.Sql = new function () {
         "left join t_charge_cate b on a.charge_cate_id = b.id where a.u_id = ? and a.type = ? " +
         "and date_format(a.date,'%Y') = date_format(sysdate(),'%Y') group by b.id";
 
-    this.getChargesByUid = "select a.id,b.name,a.amount,a.date,case a.type when 0 then 'cost' else 'rev' " +
+    this.getChargesByUid = "select a.id,b.name,a.amount,a.date,case a.type when 0 then '支出' else '收入' " +
         "end as type ,a.remark from t_charge a left join t_charge_cate b on a.charge_cate_id = b.id where a.u_id = ?" +
         " order by a.date desc";
 

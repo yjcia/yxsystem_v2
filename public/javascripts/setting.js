@@ -24,44 +24,44 @@ function initChargeTable() {
             valign: 'middle'
         }, {
             field: 'id',
-            title: 'ID',
+            title: '编号',
             align: 'center',
             valign: 'middle',
             sortable: true,
             visible: false
         }, {
             field: 'name',
-            title: 'Name',
+            title: '类型',
             align: 'center',
             valign: 'middle',
             sortable: true
         }, {
             field: 'amount',
-            title: 'Amount',
+            title: '费用',
             align: 'center',
             valign: 'middle',
             sortable: true
         }, {
             field: 'date',
-            title: 'Date',
+            title: '日期',
             align: 'center',
             valign: 'middle',
             sortable: true
         }, {
             field: 'type',
-            title: 'Type',
+            title: '收入/支出',
             align: 'center',
             valign: 'middle'
         },
             {
                 field: 'remark',
-                title: 'Remark',
+                title: '备注',
                 align: 'center',
                 valign: 'middle'
             },
             {
                 field: 'operate',
-                title: 'Item Operate',
+                title: '操作',
                 align: 'center',
                 events: operateEvents,
                 formatter: operateFormatter
@@ -112,10 +112,10 @@ function operateFormatter(value, row, index) {
     return [
         '<a class="edit" href="javascript:void(0)" title="Eidt">',
         '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editChargeModal">' +
-        'Edit</button>',
+        '编辑</button>',
         '</a>  ',
         '<a class="remove" href="javascript:void(0)" title="Remove">',
-        '<button type="button" class="btn btn-danger">Remove</button>',
+        '<button type="button" class="btn btn-danger">删除</button>',
         '</a>'
     ].join('');
 }

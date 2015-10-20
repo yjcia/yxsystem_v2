@@ -2,13 +2,13 @@
  * Created by YanJun on 2015/7/6.
  */
 var chartsProp = {
-    costAmountLineMonth: {title: 'Cost Amount Line (Month)', container: '#container1'},
-    costAmountLineYear: {title: 'Cost Amount Line (Year)', container: '#container2'},
-    costAmountType: {title: 'Current Year Cost Amount Type', container: '#container3'},
-    revAmountLineMonth: {title: 'Rev Amount Line (Month)', container: '#container4'},
-    revAmountLineYear: {title: 'Rev Amount Line (Year)', container: '#container5'},
-    revAmountType: {title: 'Current Year Rev Amount Type', container: '#container6'},
-    revCostAmountLineMonth: {title: 'Rev & Cost Amount Line (Month)', container: '#containerBoth'}
+    costAmountLineMonth: {title: '费用开支统计 (月)', container: '#container1'},
+    costAmountLineYear: {title: '费用开支统计 (年)', container: '#container2'},
+    costAmountType: {title: '费用开支类型分布', container: '#container3'},
+    revAmountLineMonth: {title: '费用收入统计 (月)', container: '#container4'},
+    revAmountLineYear: {title: '费用收入统计 (年)', container: '#container5'},
+    revAmountType: {title: '费用收入类型分布', container: '#container6'},
+    revCostAmountLineMonth: {title: '收入支出统计 (月)', container: '#containerBoth'}
 };
 
 var calendarProp = {
@@ -159,8 +159,8 @@ function getBothAmountLineMonth(title, containerId) {
                     forCostDataArr.push(forCostData[i].amount);
                     forRevDataArr.push(forRevData[i].amount);
                 }
-                xData.push({name: 'Cost', data: forCostDataArr});
-                xData.push({name: 'Rev', data: forRevDataArr});
+                xData.push({name: '支出', data: forCostDataArr});
+                xData.push({name: '收入', data: forRevDataArr});
                 generateBothAmountLineMonth(title, containerId, xData);
             }
 
@@ -177,18 +177,18 @@ function generateAmountLineMonth(title, containerId, xData) {
         },
         xAxis: {
             title: {
-                text: 'Month'
+                text: '月份'
             },
             allowDecimals: false,
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            categories: ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二']
         },
         yAxis: {
             title: {
-                text: 'Amount'
+                text: '费用'
             },
             labels: {
                 formatter: function () {
-                    return this.value + 'CNY';
+                    return this.value + '元';
                 }
             }
         },
@@ -225,18 +225,18 @@ function generateAmountLineYear(title, containerId, xCate, xData) {
         },
         xAxis: {
             title: {
-                text: 'Year'
+                text: '年'
             },
             allowDecimals: false,
             categories: xCate
         },
         yAxis: {
             title: {
-                text: 'Amount'
+                text: '费用'
             },
             labels: {
                 formatter: function () {
-                    return this.value + 'CNY';
+                    return this.value + '元';
                 }
             }
         },
@@ -275,7 +275,7 @@ function generateAmountTypePie(title, containerId, pieData) {
             text: title
         },
         tooltip: {
-            pointFormat: '{point.y} CNY</b>'
+            pointFormat: '{point.y} 元</b>'
         },
         plotOptions: {
             pie: {
@@ -283,7 +283,7 @@ function generateAmountTypePie(title, containerId, pieData) {
                 cursor: 'pointer',
                 dataLabels: {
                     enabled: true,
-                    format: '<b>{point.name}</b>: {point.y} CNY',
+                    format: '<b>{point.name}</b>: {point.y} 元',
                     style: {
                         color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
                     }
@@ -306,18 +306,18 @@ function generateBothAmountLineMonth(title, containerId, xData) {
         },
         xAxis: {
             title: {
-                text: 'Month'
+                text: '月份'
             },
             allowDecimals: false,
-            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            categories: ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二']
         },
         yAxis: {
             title: {
-                text: 'Amount'
+                text: '费用'
             },
             labels: {
                 formatter: function () {
-                    return this.value + 'CNY';
+                    return this.value + '元';
                 }
             }
         },
@@ -390,31 +390,31 @@ function getChargesTable() {
         //clickToSelect: true,
         columns: [{
             field: 'id',
-            title: 'ID',
+            title: '编号',
             align: 'center',
             valign: 'middle',
             visible: false
         }, {
             field: 'name',
-            title: 'Name',
+            title: '类型',
             align: 'center',
             valign: 'middle',
             sortable: true
         }, {
             field: 'amount',
-            title: 'Amount',
+            title: '费用',
             align: 'center',
             valign: 'middle',
             sortable: true
         }, {
             field: 'date',
-            title: 'Date',
+            title: '日期',
             align: 'center',
             valign: 'middle',
             sortable: true
         }, {
             field: 'type',
-            title: 'Type',
+            title: '收入/支出',
             align: 'center',
             valign: 'middle'
         }]

@@ -13,7 +13,7 @@
         <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addChargeModal">Edit</button>-->
         <!--</div>-->
         <div class="col-md-12">
-            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addChargeModal">Add Charge
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addChargeModal">新增费用
             </button>
             <table id="chargeSettingTable" data-show-export="true"></table>
         </div>
@@ -25,7 +25,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Edit</h4>
+                <h4 class="modal-title" id="myModalLabel">编辑</h4>
             </div>
             <div class="modal-body">
                 <form id="chargeEditForm">
@@ -38,12 +38,18 @@
                                 <span class="glyphicon glyphicon-list"></span>
                             </span>
                             <select id="cateSelect" class="form-control">
-                                <option value="1">Food</option>
-                                <option value="2">Traffic</option>
-                                <option value="3">Telecome</option>
-                                <option value="4">Electric</option>
-                                <option value="5">Gas</option>
-                                <option value="6">Others</option>
+                                <option value="1">食品</option>
+                                <option value="2">车费</option>
+                                <option value="3">手机通讯费</option>
+                                <option value="4">电费</option>
+                                <option value="5">煤气费</option>
+                                <option value="6">水费</option>
+                                <option value="7">宽带费</option>
+                                <option value="8">餐费</option>
+                                <option value="9">网购</option>
+                                <option value="10">人情</option>
+                                <option value="11">工资</option>
+                                <option value="12">理财</option>
                             </select>
                         </div>
                     </div>
@@ -54,7 +60,7 @@
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-usd"></span>
                             </span>
-                            <input type="text" class="form-control" id="editAmount" name="amount" placeholder="Amount">
+                            <input type="text" class="form-control" id="editAmount" name="amount" placeholder="费用">
 
                         </div>
                     </div>
@@ -66,7 +72,7 @@
                                 <span class="glyphicon-calendar glyphicon"></span>
                             </span>
                             <input type="text" class="form-control" id="editDate" name="date"
-                                   data-date-format="yyyy-mm-dd" placeholder="Date" disabled="true">
+                                   data-date-format="yyyy-mm-dd" placeholder="日期" disabled="true">
 
                         </div>
                     </div>
@@ -78,8 +84,8 @@
                                 <span class="glyphicon-list glyphicon"></span>
                             </span>
                             <select class="form-control" id="typeSelect">
-                                <option value="0">rev</option>
-                                <option value="1">cost</option>
+                                <option value="0">收入</option>
+                                <option value="1">支出</option>
                             </select>
                         </div>
                     </div>
@@ -91,14 +97,14 @@
                             <span class="input-group-addon">
                                 <span class="glyphicon-comment glyphicon"></span>
                             </span>
-                            <input type="text" class="form-control" id="editRemark" name="remark" placeholder="Remark">
+                            <input type="text" class="form-control" id="editRemark" name="remark" placeholder="备注">
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="saveChargeUpdate()">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="saveChargeUpdate()">保存</button>
             </div>
         </div>
     </div>
@@ -110,7 +116,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">New</h4>
+                <h4 class="modal-title" id="myModalLabel">新增</h4>
             </div>
             <div class="modal-body">
                 <form id="chargeAddForm">
@@ -121,12 +127,18 @@
                                 <span class="glyphicon glyphicon-list"></span>
                             </span>
                             <select id="addCateSelect" class="form-control">
-                                <option value="1">Food</option>
-                                <option value="2">Traffic</option>
-                                <option value="3">Telecome</option>
-                                <option value="4">Electric</option>
-                                <option value="5">Gas</option>
-                                <option value="6">Others</option>
+                                <option value="1">食品</option>
+                                <option value="2">车费</option>
+                                <option value="3">手机通讯费</option>
+                                <option value="4">电费</option>
+                                <option value="5">煤气费</option>
+                                <option value="6">水费</option>
+                                <option value="7">宽带费</option>
+                                <option value="8">餐费</option>
+                                <option value="9">网购</option>
+                                <option value="10">人情</option>
+                                <option value="11">工资</option>
+                                <option value="12">理财</option>
                             </select>
                         </div>
                     </div>
@@ -137,7 +149,7 @@
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-usd"></span>
                             </span>
-                            <input type="text" class="form-control" id="addAmount" name="amount" placeholder="Amount">
+                            <input type="text" class="form-control" id="addAmount" name="amount" placeholder="费用">
                         </div>
                     </div>
                     <div class="form-group">
@@ -147,7 +159,7 @@
                                 <span class="glyphicon-calendar glyphicon"></span>
                             </span>
                             <input type="text" class="form-control" id="addDate" name="date"
-                                   data-date-format="yyyy-mm-dd" placeholder="Date" disabled="true">
+                                   data-date-format="yyyy-mm-dd" placeholder="日期" disabled="true">
 
                         </div>
                     </div>
@@ -158,8 +170,8 @@
                                 <span class="glyphicon-list glyphicon"></span>
                             </span>
                             <select class="form-control" id="addTypeSelect">
-                                <option value="0">rev</option>
-                                <option value="1">cost</option>
+                                <option value="0">收入</option>
+                                <option value="1">支出</option>
                             </select>
                         </div>
                     </div>
@@ -169,14 +181,14 @@
                             <span class="input-group-addon">
                                 <span class="glyphicon-comment glyphicon"></span>
                             </span>
-                            <input type="text" class="form-control" id="addRemark" name="remark" placeholder="Remark">
+                            <input type="text" class="form-control" id="addRemark" name="remark" placeholder="备注">
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="saveNewCharge()">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="saveNewCharge()">保存</button>
             </div>
         </div>
     </div>
