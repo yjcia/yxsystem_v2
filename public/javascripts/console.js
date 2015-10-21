@@ -437,5 +437,5 @@ $(function () {
 
     getChargesTable();
 
-    getQrCode();
+    //getQrCode();
 });
