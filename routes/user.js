@@ -94,7 +94,8 @@ router.post('/amountLineMonth', function (req, res, next) {
     if (user && user.id != null) {
         var User = DB.getTableObj('User');
         var sql = Sql.amountLineMonth;
-        var params = [user.id, req.body.type];
+        //var params = [user.id, req.body.type];
+        var params = [req.body.type];
         User.executeSql(sql, params, function (err, result) {
             if (err) {
                 log.helper.writeErr(err);
@@ -120,7 +121,7 @@ router.post('/bothAmountLineMonth', function (req, res, next) {
         var User = DB.getTableObj('User');
         var sqlForCost = Sql.bothAmountLineMonthForCost;
         var sqlForRev = Sql.bothAmountLineMonthForRev;
-        var params = [user.id];
+        var params = [];
         async.series({
                 forCost: function (callback) {
                     User.executeSql(sqlForCost, params, function (err, result) {
@@ -177,7 +178,7 @@ router.post('/amountLineYear', function (req, res, next) {
     if (user && user.id != null) {
         var User = DB.getTableObj('User');
         var sql = Sql.amountLineYear;
-        var params = [user.id, req.body.type];
+        var params = [req.body.type];
         User.executeSql(sql, params, function (err, result) {
             if (err) {
                 log.helper.writeErr(err);
@@ -356,26 +357,32 @@ router.post('/getChargeCalendar', function (req, res, next) {
     var user = req.session.user;
     if (user && user.id != null) {
         var User = DB.getTableObj('User');
-        var params = [user.id];
+        var params = [];
         User.executeSql(Sql.getChargeCalendar, params, function (err, result) {
             if (err) {
                 log.helper.writeErr(err);
                 res.json({});
             } else {
                 if (result && result.length > 0) {
-                    log.helper.writeDebug(result);
+                    //log.helper.writeDebug(result);
                     //callback(null, result);
                     var calendarArr = new Array();
                     var returnObj = {};
                     for (var i = 0; i < result.length; i++) {
+                        log.helper.writeDebug(result[i].type);
+                        var type = "支出";
+                        if (result[i].type == 1) {
+                            type = "收入";
+                        }
                         var calenderObj = {
                             id: result[i].id,
-                            title: result[i].name != '' ? result[i].name : " " +
-                            result[i].title != '' ? result[i].title : "",
+
+                            title: result[i].name + " : " + type + " " + result[i].amount + " 元",
                             class: "event-warning",
                             start: new Date(result[i].date).getTime(),
                             end: new Date(result[i].date).getTime()
                         };
+                        //log.helper.writeDebug(calenderObj);
                         calendarArr.push(calenderObj);
                         returnObj.success = 1;
                         returnObj.result = calendarArr;
@@ -409,7 +416,7 @@ router.get('/getChargesByUid', function (req, res, next) {
     var user = req.session.user;
     if (user && user.id != null) {
         var User = DB.getTableObj('User');
-        var params = [user.id];
+        var params = [];
         User.executeSql(Sql.getChargesByUid, params, function (err, result) {
             if (err) {
                 log.helper.writeErr(err);

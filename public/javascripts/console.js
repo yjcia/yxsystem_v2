@@ -2,11 +2,11 @@
  * Created by YanJun on 2015/7/6.
  */
 var chartsProp = {
-    costAmountLineMonth: {title: '费用开支统计 (月)', container: '#container1'},
-    costAmountLineYear: {title: '费用开支统计 (年)', container: '#container2'},
-    costAmountType: {title: '费用开支类型分布', container: '#container3'},
+    costAmountLineMonth: {title: '费用支出统计 (月)', container: '#container1'},
+    costAmountLineYear: {title: '费用支出统计 (年)', container: '#container2'},
+    costAmountType: {title: '费用支出类型分布', container: '#container3'},
     revAmountLineMonth: {title: '费用收入统计 (月)', container: '#container4'},
-    revAmountLineYear: {title: '费用收入统计 (年)', container: '#container5'},
+    revAmountLineYear: {title: '费用收入统计 (年)', container: '#container7'},
     revAmountType: {title: '费用收入类型分布', container: '#container6'},
     revCostAmountLineMonth: {title: '收入支出统计 (月)', container: '#containerBoth'}
 };
@@ -31,6 +31,7 @@ function getCalendar() {
     });
     var calendar = $(calendarProp.container).calendar(
         {
+            language: 'zh-CN',
             tmpl_path: calendarProp.tmpl_path,
             events_source: function () {
                 var returnData;
@@ -180,7 +181,7 @@ function generateAmountLineMonth(title, containerId, xData) {
                 text: '月份'
             },
             allowDecimals: false,
-            categories: ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二']
+            categories: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
         },
         yAxis: {
             title: {
@@ -210,7 +211,7 @@ function generateAmountLineMonth(title, containerId, xData) {
             }
         },
         series: [{
-            name: 'YANJUN',
+            name: '费用',
             data: xData
         }]
     });
@@ -258,7 +259,7 @@ function generateAmountLineYear(title, containerId, xCate, xData) {
             }
         },
         series: [{
-            name: 'YANJUN',
+            name: '费用',
             data: xData
         }]
     });
@@ -309,7 +310,7 @@ function generateBothAmountLineMonth(title, containerId, xData) {
                 text: '月份'
             },
             allowDecimals: false,
-            categories: ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二']
+            categories: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
         },
         yAxis: {
             title: {
@@ -425,11 +426,11 @@ $(function () {
     getBothAmountLineMonth(chartsProp.revCostAmountLineMonth.title, chartsProp.revCostAmountLineMonth.container);
 
     getAmountLineMonth(chartsProp.costAmountLineMonth.title, chartsProp.costAmountLineMonth.container, 0);
-    //getAmountLineYear(chartsProp.costAmountLineYear.title, chartsProp.costAmountLineYear.container, 0);
+    getAmountLineYear(chartsProp.costAmountLineYear.title, chartsProp.costAmountLineYear.container, 0);
     getAmountTypePie(chartsProp.costAmountType.title, chartsProp.costAmountType.container, 0);
 
     getAmountLineMonth(chartsProp.revAmountLineMonth.title, chartsProp.revAmountLineMonth.container, 1);
-    //getAmountLineYear(chartsProp.revAmountLineYear.title, chartsProp.revAmountLineYear.container, 1);
+    getAmountLineYear(chartsProp.revAmountLineYear.title, chartsProp.revAmountLineYear.container, 1);
     getAmountTypePie(chartsProp.revAmountType.title, chartsProp.revAmountType.container, 1);
 
     getCalendar();
