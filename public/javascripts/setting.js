@@ -102,11 +102,26 @@ function initAddDateTimepicker() {
                 .validateField('date');
         });
 }
+function initChargeNames() {
+    $.ajax({
+        url: '/admin/getChargeNames',
+        type: 'get',
+        success: function (result) {
+            //console.log(result);
+            for (var i = 0; i < result.length; i++) {
+                //addCateSelect
+                $("#cateSelect").append("<option value='" + result[i].id + "'>" + result[i].name + "</option>");
+                $("#addCateSelect").append("<option value='" + result[i].id + "'>" + result[i].name + "</option>");
+            }
+        }
+    });
+}
 
 $(function () {
     initChargeTable();
     initEditDateTimepicker();
     initAddDateTimepicker();
+    initChargeNames();
 });
 function operateFormatter(value, row, index) {
     return [

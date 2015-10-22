@@ -8,7 +8,9 @@ var chartsProp = {
     revAmountLineMonth: {title: '费用收入统计 (月)', container: '#container4'},
     revAmountLineYear: {title: '费用收入统计 (年)', container: '#container7'},
     revAmountType: {title: '费用收入类型分布', container: '#container6'},
-    revCostAmountLineMonth: {title: '收入支出统计 (月)', container: '#containerBoth'}
+    revCostAmountLineMonth: {title: '收入支出统计 (月)', container: '#containerBoth'},
+    CostAmountMonthByUser: {title: '支出比重统计 (月)', container: '#container8'},
+    RevAmountMonthByUser: {title: '收入比重统计 (月)', container: '#container9'}
 };
 
 var calendarProp = {
@@ -143,6 +145,28 @@ function getAmountTypePie(title, containerId, type) {
         }
     });
 }
+function getSumAmountByUserPie(title, containerId, type) {
+    $.ajax({
+        url: '/user/sumAmountByUserPie',
+        type: 'post',
+        data: {
+            type: type
+        },
+        success: function (result) {
+            if (result && result.length > 0) {
+                var typeJsonData = new Array();
+                for (var i = 0; i < result.length; i++) {
+                    var typeArr = new Array();
+                    typeArr.push(result[i].username);
+                    typeArr.push(result[i].sumamount);
+                    typeJsonData.push(typeArr);
+                }
+                generateSumAmountByUserPie(title, containerId, typeJsonData);
+            }
+
+        }
+    });
+}
 function getBothAmountLineMonth(title, containerId) {
     $.ajax({
         url: '/user/bothAmountLineMonth',
@@ -265,6 +289,39 @@ function generateAmountLineYear(title, containerId, xCate, xData) {
     });
 }
 function generateAmountTypePie(title, containerId, pieData) {
+    $(containerId).highcharts({
+        chart: {
+            type: 'pie',
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false
+        },
+        title: {
+            text: title
+        },
+        tooltip: {
+            pointFormat: '{point.y} 元</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.y} 元',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        },
+        series: [{
+            type: 'pie',
+            data: pieData
+        }]
+    });
+}
+function generateSumAmountByUserPie(title, containerId, pieData) {
     $(containerId).highcharts({
         chart: {
             type: 'pie',
@@ -432,7 +489,8 @@ $(function () {
     getAmountLineMonth(chartsProp.revAmountLineMonth.title, chartsProp.revAmountLineMonth.container, 1);
     getAmountLineYear(chartsProp.revAmountLineYear.title, chartsProp.revAmountLineYear.container, 1);
     getAmountTypePie(chartsProp.revAmountType.title, chartsProp.revAmountType.container, 1);
-
+    getSumAmountByUserPie(chartsProp.CostAmountMonthByUser.title, chartsProp.CostAmountMonthByUser.container, 0);
+    getSumAmountByUserPie(chartsProp.RevAmountMonthByUser.title, chartsProp.RevAmountMonthByUser.container, 1);
     getCalendar();
 
     getChargesTable();

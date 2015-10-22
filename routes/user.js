@@ -197,13 +197,38 @@ router.post('/amountLineYear', function (req, res, next) {
     }
 });
 
+router.post('/sumAmountByUserPie', function (req, res, next) {
+    var user = req.session.user;
+    //log.helper.writeDebug(user);
+    if (user && user.id != null) {
+        var User = DB.getTableObj('User');
+        var sql = Sql.sumAmountByUserPie;
+        var params = [req.body.type];
+        User.executeSql(sql, params, function (err, result) {
+            if (err) {
+                log.helper.writeErr(err);
+                res.json(null);
+            } else {
+                if (result && result.length > 0) {
+                    //log.helper.writeDebug('AmountTypePie year ' + result);
+                    res.json(result);
+                } else {
+                    res.json(null);
+                }
+            }
+        });
+    } else {
+        res.json(null);
+    }
+});
+
 router.post('/amountTypePie', function (req, res, next) {
     var user = req.session.user;
     //log.helper.writeDebug(user);
     if (user && user.id != null) {
         var User = DB.getTableObj('User');
         var sql = Sql.amountTypePie;
-        var params = [user.id, req.body.type];
+        var params = [req.body.type];
         User.executeSql(sql, params, function (err, result) {
             if (err) {
                 log.helper.writeErr(err);

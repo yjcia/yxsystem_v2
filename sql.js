@@ -20,7 +20,7 @@ global.Sql = new function () {
         "where a.type = ? group by date_format(a.date,'%Y')";
 
     this.amountTypePie = "select b.name,sum(a.amount) as amount from t_charge a " +
-        "left join t_charge_cate b on a.charge_cate_id = b.id where a.u_id = ? and a.type = ? " +
+        "left join t_charge_cate b on a.charge_cate_id = b.id where a.type = ? " +
         "and date_format(a.date,'%Y') = date_format(sysdate(),'%Y') group by b.id";
 
     this.getChargesByUid = "select a.id,b.name,a.amount,a.date,case a.type when 0 then '支出' else '收入' " +
@@ -31,5 +31,9 @@ global.Sql = new function () {
         "t_charge_cate b on a.charge_cate_id = b.id where date_format(a.date,'%m') = date_format(sysdate(),'%m')" +
         " and date_format(a.date,'%Y') = date_format(sysdate(),'%Y')";
 
+    this.sumAmountByUserPie = "select sum(a.amount) as sumamount,a.u_id,b.username from t_charge a inner join t_user b on a.u_id = b.id " +
+        "where a.type = ? and date_format(a.date,'%m') = date_format(sysdate(),'%m') and date_format(a.date,'%Y') = date_format(sysdate(),'%Y') group by u_id ";
+
+    this.getChargeNames = "select id,name from t_charge_cate";
 
 }
