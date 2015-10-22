@@ -60,9 +60,9 @@ router.post('/login', function (req, res, next) {
             if (result && result.length > 0) {
                 req.session.user = result[0];
                 res.locals.user = result[0];
-                if (result[0].is_login == 1) {
-                    res.render("loginsys", {message: 'User has logged in!'});
-                } else {
+                //if (result[0].is_login == 1) {
+                //    res.render("loginsys", {message: 'User has logged in!'});
+                //} else {
                     var params = {
                         id: result[0].id,
                         is_login: 1,
@@ -78,7 +78,7 @@ router.post('/login', function (req, res, next) {
                             res.redirect("/user/index");
                         }
                     });
-                }
+                //}
 
 
             } else {
@@ -111,6 +111,7 @@ router.post('/amountLineMonth', function (req, res, next) {
             }
         });
     } else {
+
         res.json(null);
     }
 });
@@ -374,7 +375,7 @@ router.get('/login', function (req, res, next) {
 });
 
 router.get("/index", function (req, res) {
-    //log.helper.writeDebug('index user session :' + req.session.user);
+    log.helper.writeDebug('index user session :' + req.session.id);
     res.render("index");
 });
 
