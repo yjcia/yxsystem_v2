@@ -75,6 +75,8 @@ router.post('/login', function (req, res, next) {
                         } else {
                             req.session.user.is_login = 1;
                             res.locals.user.is_login = 1;
+                            //Get new Wei Xin Token
+
                             res.redirect("/user/index");
                         }
                     });
